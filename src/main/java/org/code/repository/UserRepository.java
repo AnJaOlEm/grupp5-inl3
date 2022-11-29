@@ -1,6 +1,6 @@
 package org.code.repository;
 
-import org.code.model.User;
+import org.code.data.User;
 
 import org.springframework.stereotype.Repository;
 

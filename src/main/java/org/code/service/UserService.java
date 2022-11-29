@@ -1,7 +1,7 @@
 package org.code.service;
 
 import org.code.model.RegistrationDto;
-import org.code.model.User;
+import org.code.data.User;
 import org.code.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

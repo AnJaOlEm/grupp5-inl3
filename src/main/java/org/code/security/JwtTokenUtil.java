@@ -3,7 +3,7 @@ package org.code.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import org.code.model.User;
+import org.code.data.User;
 
 import org.springframework.stereotype.Component;
 
@@ -56,7 +56,7 @@ public class JwtTokenUtil {
     public String getUserName(String token) {
         String subject = JWT.decode(token).getSubject();
 
-        return subject.split(",")[1];
+        return subject;
     }
 
 }

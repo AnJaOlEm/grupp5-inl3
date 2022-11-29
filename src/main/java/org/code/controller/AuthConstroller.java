@@ -2,7 +2,7 @@ package org.code.controller;
 
 import org.code.model.LoginDto;
 import org.code.model.RegistrationDto;
-import org.code.model.User;
+import org.code.data.User;
 import org.code.security.JwtTokenUtil;
 import org.code.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
