@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RequestMapping("/post")
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000/")
 public class PostController {
 
     PostService postService;
