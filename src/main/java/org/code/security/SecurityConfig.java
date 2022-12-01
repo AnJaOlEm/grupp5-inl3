@@ -12,6 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http = http.csrf().disable();
+        http = http.csrf().disable().cors().disable();
 
         http = http
                 .sessionManagement()
@@ -49,8 +52,7 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/api/users").authenticated()
-                .antMatchers("/post/all").authenticated();
+                        .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -65,5 +67,10 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder);
 
         return authenticationManagerBuilder.build();
+    }
+
+    @Bean
+    public HttpFirewall defaultHttpFirewall() {
+        return new DefaultHttpFirewall();
     }
 }

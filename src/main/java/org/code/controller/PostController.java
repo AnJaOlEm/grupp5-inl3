@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RequestMapping("/post")
 @RestController
+@CrossOrigin
 public class PostController {
 
     PostService postService;
@@ -46,6 +47,12 @@ public class PostController {
     @PutMapping("/update")
     public Post updatePost(User user, String title, String content) throws NotOwnerException, PostDoesNotExistException {
         return postService.edit(user, title, content);
+    }
+
+    @GetMapping("/test")
+    public String tester(){
+
+        return "test succes";
     }
 
 }

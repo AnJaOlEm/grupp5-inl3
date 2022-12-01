@@ -1,5 +1,6 @@
 package org.code.security;
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.code.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,29 +26,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println(request.getHeader("Authorization"));
         if (!StringUtils.hasLength(header) || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
         final String token = header.split(" ")[1].trim();
-        if (!jwtTokenUtil.validate(token)) {
+
+        UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUserName(token));
+
+        if (!jwtTokenUtil.validate(token, userDetails)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUserName(token));
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
-                null,
-                Optional.ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(List.of())
+                null
+                ,Optional.ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(List.of())
         );
 
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

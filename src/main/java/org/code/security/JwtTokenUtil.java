@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 import org.code.data.User;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
@@ -16,7 +17,7 @@ import java.util.Date;
 public class JwtTokenUtil {
 
     private final String jwtSecret = "CctlD5JL16m8wLTgsFNhzqjQP";
-    private final String jwtIssuer = "coder4.life";
+    private final String jwtIssuer = "GRUPP5";
 
     public String generateAccessToken(User user) {
         Algorithm algorithm = Algorithm.HMAC512(jwtSecret.getBytes());
@@ -25,7 +26,7 @@ public class JwtTokenUtil {
         return JWT.create()
                 .withSubject( user.getUsername())
                 .withIssuer(jwtIssuer)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 5 * 60 * 1000))
+                //.withExpiresAt(new Date(System.currentTimeMillis() + 5 * 60 * 1000))
                 .sign(algorithm);
     }
 
@@ -39,18 +40,24 @@ public class JwtTokenUtil {
 //                .sign(algorithm);
 //    }
 
-    public boolean validate(String token) {
-        try {
-            Long expiresAt = JWT.decode(token).getExpiresAt().getTime();
-            Calendar cal = Calendar.getInstance();
-            if (expiresAt >= cal.getTime().getTime()) {
-                return true;
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(String.format("JWT is invalid - {%s}", e.getMessage()));
-        }
+    public boolean validate(String token, UserDetails userDetails) {
+//        try {
+//            Long expiresAt = JWT.decode(token).getExpiresAt().getTime();
+//            Calendar cal = Calendar.getInstance();
+//            if (expiresAt >= cal.getTime().getTime()) {
+//                return true;
+//            }
+//        } catch (IllegalArgumentException e) {
+//            System.out.println(String.format("JWT is invalid - {%s}", e.getMessage()));
+//        }
+//
+//        return false;
 
-        return false;
+
+            final String username = getUserName(token);
+            return (username.equals(userDetails.getUsername()));
+
+
     }
 
     public String getUserName(String token) {
