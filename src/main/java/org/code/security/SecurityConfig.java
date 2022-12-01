@@ -15,6 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,8 +54,8 @@ public class SecurityConfig {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated();
+                .antMatchers("/auth/**", "post/all").permitAll()
+                .antMatchers("/api/**", "post/**").authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

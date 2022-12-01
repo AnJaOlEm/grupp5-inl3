@@ -1,6 +1,7 @@
 package org.code;
 
 import org.code.model.RegistrationDto;
+import org.code.service.PostService;
 import org.code.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,11 +25,12 @@ public class Main {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService) {
+    CommandLineRunner run(UserService userService, PostService postService) {
         return args -> {
 
             userService.create(new RegistrationDto("John Doe", "johndoe", "1234"));
             userService.create(new RegistrationDto("Jane Doe", "janedoe", "1234"));
+            postService.create(userService.getByUsername("johndoe"),"Shit on this", " Damn dis suckds!");
         };
     }
 

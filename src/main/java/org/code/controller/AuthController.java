@@ -4,6 +4,7 @@ import org.code.model.LoginDto;
 import org.code.model.RegistrationDto;
 import org.code.data.User;
 import org.code.security.JwtTokenUtil;
+import org.code.security.TokenProvider;
 import org.code.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,9 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
+    private TokenProvider tokenProvider;
+
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("login")
@@ -39,7 +43,7 @@ public class AuthController {
         org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         User user = userService.getByUsername(userDetails.getUsername());
 
-        String accessToken = jwtTokenUtil.generateAccessToken(user);
+        String accessToken = tokenProvider.generate(user);
         //String refreshToken = jwtTokenUtil.generateRefreshToken(user);
 
 //        Map<String, String> tokens = new HashMap<>();
