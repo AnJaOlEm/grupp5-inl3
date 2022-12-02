@@ -6,6 +6,7 @@ import org.code.data.User;
 import org.code.exception.NotOwnerException;
 import org.code.exception.PostAlreadyExistsException;
 import org.code.exception.PostDoesNotExistException;
+import org.code.model.PostDto;
 import org.code.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public Post createPost(@RequestBody Post post) throws PostAlreadyExistsException {
-        System.out.println(post.getContent() + " <---------------");
-        return postService.create(post.getCreator(), post.getTitle(), post.getContent());
+    public Post createPost(@RequestBody PostDto postDto) throws PostAlreadyExistsException {
+        //System.out.println(post.getContent() + " <---------------");
+        return postService.create(postDto.username(),postDto.title(),postDto.content());
     }
 
     @DeleteMapping("/delete")

@@ -15,19 +15,21 @@ import java.util.Collection;
 public class PostService {
 
     private final PostRepository repository;
+    private final UserService userService;
 
     @Autowired
-    public PostService(PostRepository repository) {
+    public PostService(PostRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
-    public Post create(User user, String title, String content)
+    public Post create(String name, String title, String content)
             throws PostAlreadyExistsException
     {
         var existing = repository.getByTitle(title);
         if (existing.isPresent())
             throw new PostAlreadyExistsException();
-
+       User user =  userService.getByUsername(name);
         var post = new Post(title, content, user);
         repository.save(post);
 
