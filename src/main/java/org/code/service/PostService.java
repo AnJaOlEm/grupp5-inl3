@@ -8,6 +8,7 @@ import org.code.exception.PostDoesNotExistException;
 import org.code.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Collection;
 
@@ -36,9 +37,11 @@ public class PostService {
         return post;
     }
 
-    public Post delete(User user, String title)
+    public Post delete( String username, String title)
             throws PostDoesNotExistException, NotOwnerException
     {
+        System.out.println(username + "<---name title --->"+ title);
+        User user = userService.getByUsername(username);
         var post = repository
                 .getByTitle(title)
                 .orElseThrow(PostDoesNotExistException::new);
@@ -51,17 +54,21 @@ public class PostService {
         return post;
     }
 
-    public Post edit(User user, String title, String updatedContent)
+    public Post edit(String username, String title,String oldTitle, String updatedContent)
             throws PostDoesNotExistException, NotOwnerException
     {
+        var user = userService.getByUsername(username);
+
         var post = repository
-                .getByTitle(title)
+                .getByTitle(oldTitle)
                 .orElseThrow(PostDoesNotExistException::new);
 
         if (!post.getCreator().equals(user))
             throw new NotOwnerException();
 
+        repository.delete(post);
         post.setContent(updatedContent);
+        post.setTitle(title);
         repository.save(post);
 
         return post;

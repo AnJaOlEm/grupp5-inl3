@@ -25,9 +25,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-
-
     private final UserDetailsService userDetailsService;
     private final TokenProvider tokenProvider;
 
@@ -87,6 +84,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //
 //        filterChain.doFilter(request, response);
 //    }
-
 
 }

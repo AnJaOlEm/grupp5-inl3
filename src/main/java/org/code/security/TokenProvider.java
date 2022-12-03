@@ -26,15 +26,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class TokenProvider {
-
-
     private String jwtSecret = "v9y$B&E)H@MbQeThWmZq4t7w!z%C*F-JaNdRfUjXn2r5u8x/A?D(G+KbPeShVkYp";
-
-
-
     public String generate(User user) {
-
-
 
         byte[] signingKey = jwtSecret.getBytes();
 

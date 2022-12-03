@@ -32,8 +32,7 @@ public class AuthController {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+
 
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody LoginDto request) {
@@ -84,9 +83,6 @@ public class AuthController {
     public User register(@RequestBody RegistrationDto request) {
         return userService.create(request);
     }
-    @GetMapping("test")
-    public String test(){
-        return "Tessst";
-    }
+
 
 }

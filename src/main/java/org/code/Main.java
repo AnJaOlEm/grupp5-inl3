@@ -30,7 +30,7 @@ public class Main {
 
             userService.create(new RegistrationDto("John Doe", "johndoe", "1234"));
             userService.create(new RegistrationDto("Jane Doe", "janedoe", "1234"));
-            postService.create("johndoe","Shit on this", " Damn dis suckds!");
+            postService.create("johndoe","heeeellloo", " asdasdas asd aas asd!");
         };
     }
 

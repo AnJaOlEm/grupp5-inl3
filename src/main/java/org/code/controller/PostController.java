@@ -1,19 +1,17 @@
 package org.code.controller;
 
-import lombok.AllArgsConstructor;
 import org.code.data.Post;
 import org.code.data.User;
 import org.code.exception.NotOwnerException;
 import org.code.exception.PostAlreadyExistsException;
 import org.code.exception.PostDoesNotExistException;
+import org.code.model.DeleteDto;
 import org.code.model.PostDto;
 import org.code.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/post")
 @RestController
@@ -36,24 +34,18 @@ public class PostController {
 
     @PostMapping("/create")
     public Post createPost(@RequestBody PostDto postDto) throws PostAlreadyExistsException {
-        //System.out.println(post.getContent() + " <---------------");
         return postService.create(postDto.username(),postDto.title(),postDto.content());
     }
 
-    @DeleteMapping("/delete")
-    public void deletePost(User user, String title) throws NotOwnerException, PostDoesNotExistException {
-        postService.delete(user, title);
+    @PostMapping("/delete")
+    public void deletePost(@RequestBody DeleteDto deleteDto) throws NotOwnerException, PostDoesNotExistException {
+        postService.delete(deleteDto.username(), deleteDto.title());
     }
 
     @PutMapping("/update")
-    public Post updatePost(User user, String title, String content) throws NotOwnerException, PostDoesNotExistException {
-        return postService.edit(user, title, content);
+    public Post updatePost(@RequestBody PostDto postDto) throws NotOwnerException, PostDoesNotExistException {
+        return postService.edit(postDto.username(), postDto.title(), postDto.oldTitle(), postDto.content());
     }
 
-    @GetMapping("/test")
-    public String tester(){
-
-        return "test succes";
-    }
 
 }
